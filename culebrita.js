@@ -85,3 +85,53 @@ if (snake[0].x === food.x && snake[0].y === food.y) {
     setTimeout(draw, velocidad);
 }
 
+// Manejo del teclado
+document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+        case 'ArrowRight':
+            if (direction !== 'left') nextDirection = 'right';
+            break;
+        case 'ArrowLeft':
+            if (direction !== 'right') nextDirection = 'left';
+            break;
+        case 'ArrowUp':
+            if (direction !== 'down') nextDirection = 'up';
+            break;
+        case 'ArrowDown':
+            if (direction !== 'up') nextDirection = 'down';
+            break;
+    }
+});
+
+// Manejo del botón de pausa
+document.getElementById('pauseButton').addEventListener('click', () => {
+    isPaused = !isPaused; // Cambia el estado de pausa
+    document.getElementById('pauseButton').textContent = isPaused ? 'Reanudar' : 'Pausar'; // Cambia el texto del botón
+});
+
+// Función para terminar el juego
+function gameOver() {
+    if (score > maxScore) {
+        maxScore = score; // Actualiza el puntaje máximo
+        alert(`¡Felicidades! Has superado el puntaje máximo anterior. Puntaje final: ${score}`);
+    } else {
+        alert(`Juego terminado. Puntaje final: ${score}`);
+    }
+    resetGame(); // Reinicia el juego
+}
+
+// Función para reiniciar el juego
+function resetGame() {
+    snake = [{ x: 200, y: 200 }, { x: 190, y: 200 }, { x: 180, y: 200 }];
+    direction = 'right';
+    nextDirection = 'right';
+    food = {
+        x: Math.floor(Math.random() * (canvas.width / unitSize)) * unitSize,
+        y: Math.floor(Math.random() * (canvas.height / unitSize)) * unitSize
+    };
+    score = 0; // Reinicia el puntaje actual
+    draw(); // Reinicia el ciclo del juego
+}
+
+// Inicia el juego
+draw();
